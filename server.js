@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
 
-//Athentication
+//Authentication
 const config = {
   authRequired: false,
   auth0Logout: true,
@@ -20,17 +20,19 @@ const config = {
   secret: "sdbjkfheiuhfioknerkgnjkerkjgnrekjrfuiehfiehrjghuierhkflndsjknkj",
 };
 
-// auth router attaches /login, /logout, and /callback routes to the baseURL
+// auth
 app.use(auth(config));
 //Root url
 app.get("/", (req, res) => {
   res.send(
-    req.oidc.isAuthenticated() ? { msg: "Welcome" } : { msg: "Logged Out",logIn : "http://localhost:3000/login" }
+    req.oidc.isAuthenticated()
+      ? { msg: "Welcome" }
+      : { msg: "Logged Out", logIn: "http://localhost:3000/login" }
   );
   res.send({ msg: "Book List" });
 });
 
-//Profile Page
+//Profile Page of user
 app.get("/profile", requiresAuth(), (req, res) => {
   res.send(JSON.stringify(req.oidc.user));
 });
@@ -115,7 +117,7 @@ connect(
   }
 );
 
-//App listening to port 5000
+//App listening to port 3000
 app.listen(PORT, () => {
   console.log(`Server listening at ${PORT} `);
 });
